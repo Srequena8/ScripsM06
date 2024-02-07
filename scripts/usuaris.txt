@@ -1,0 +1,3 @@
+Usuari Usuario que pertany a la UO  Unidad Organizativa i correu electrònic  Correo Electrónico
+Usuari jcasas que pertany a la UO  docents i correu electrònic  jordi.casas@itb.cat
+Usuari msmith que pertany a la UO  staff i correu electrònic  mary.smith@example.com
