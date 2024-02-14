@@ -1,0 +1,22 @@
+# Exercici 2 - Afegir script a directori i al PATH
+
+# Obtenir la ruta de l'escriptori de l'usuari
+$desktopPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'scripts')
+
+# Crear el directori si no existeix
+if (-not (Test-Path -Path $desktopPath -PathType Container)) {
+    New-Item -Path $desktopPath -ItemType Directory
+}
+
+# Moure l'script al directori "scripts"
+$scriptPath = Join-Path $desktopPath "Exercici1.ps1"
+Move-Item -Path "C:\Users\Saul\Documents\Exercici1.ps1" -Destination $scriptPath
+
+# Afegir el directori al PATH del sistema
+$Env:PATH += ";$desktopPath"
+
+# Canviar la política d'execució per a la sessió actual (Sense verificar la signatura)
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+# Comprovar que l'execució de l'script funciona sense accedir al directori
+& $scriptPath

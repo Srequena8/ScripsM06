@@ -1,0 +1,15 @@
+# Exercici 3 - Pas de paràmetres
+
+# Verificar si s'han proporcionat els 3 paràmetres
+if ($args.Count -eq 3) {
+    $primerParametre = $args[0]
+    $segonParametre = $args[1]
+    $tercerParametre = $args[2]
+
+    # Mostrar els valors dels paràmetres
+    Write-Host "Valor del primer paràmetre de l’script: $primerParametre"
+    Write-Host "Valor del segon paràmetre de l’script: $segonParametre"
+    Write-Host "Valor del tercer paràmetre de l’script: $tercerParametre"
+} else {
+    Write-Host "Siusplau, proporciona 3 paràmetres en l'execució de l’script."
+}

@@ -1,0 +1,9 @@
+# Exercici 1 - Variables d'entorn
+
+# Obté les variables d'entorn amb la comanda Get-ChildItem Env
+$variablesEntorn = Get-ChildItem Env
+
+# Mostrem les variables d'entorn
+foreach ($variable in $variablesEntorn) {
+    Write-Host "$($variable.Name) = $($variable.Value)"
+}

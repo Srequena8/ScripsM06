@@ -1,0 +1,17 @@
+# Exercici5 - Comprobar contingut
+
+# Verificar si s'ha proporcionat un paràmetre
+if ($args.Count -eq 1) {
+    $ruta = $args[0]
+
+    # Verificar si la ruta existeix
+    if (Test-Path $ruta -PathType Container) {
+        # Mostrar el missatge i llistar el contingut del directori
+        Write-Host "El contingut del directori $ruta és:"
+        Get-ChildItem $ruta
+    } else {
+        Write-Host "L'argument no és un directori o la ruta proporcionada no existeix."
+    }
+} else {
+    Write-Host "Siusplau, proporciona una única ruta com a paràmetre."
+}

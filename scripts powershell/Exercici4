@@ -1,0 +1,22 @@
+# Exercici4 - Verificar nom
+
+# Verificar si s'ha proporcionat un paràmetre
+if ($args.Count -eq 1) {
+    $ruta = $args[0]
+
+    # Verificar si la ruta existeix
+    if (Test-Path $ruta) {
+        # Determinar si és un fitxer regular o un directori
+        if (Test-Path $ruta -PathType Leaf) {
+            Write-Host "$ruta és un fitxer regular."
+        } elseif (Test-Path $ruta -PathType Container) {
+            Write-Host "$ruta és un directori."
+        } else {
+            Write-Host "No s'ha pogut determinar si $ruta és un fitxer regular o un directori."
+        }
+    } else {
+        Write-Host "La ruta proporcionada no existeix."
+    }
+} else {
+    Write-Host "Siusplau, proporciona una única ruta com a paràmetre."
+}
