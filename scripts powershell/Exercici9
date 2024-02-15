@@ -1,0 +1,18 @@
+param (
+    [string[]]$nomsDirectoris
+)
+
+foreach ($directori in $nomsDirectoris) {
+    # Verificar si el directorio existe
+    if (Test-Path $directori -PathType Container) {
+        $ocupacion = Get-ChildItem -LiteralPath $directori -Recurse | Measure-Object -Property Length -Sum
+        $tamanoEnBytes = $ocupacion.Sum
+        $tamanoEnMegabytes = $tamanoEnBytes / 1MB
+
+        Write-Host "Directorio: $($directori)"
+        Write-Host "Ocupación de disco: $($tamanoEnMegabytes) MB"
+        Write-Host "---------------------------"
+    } else {
+        Write-Host "El directorio '$directori' no es válido o no existe."
+    }
+}

@@ -1,0 +1,28 @@
+param (
+    [string]$directoriOrigen,
+    [string]$directoriDesti
+)
+
+# Verificar si el directorio de origen existe
+if (-not (Test-Path $directoriOrigen -PathType Container)) {
+    Write-Host "Error: El directorio de origen '$directoriOrigen' no existe."
+    exit 1
+}
+
+# Verificar si ya existe un archivo de copia de seguridad con el mismo nombre
+$fechaActual = Get-Date -Format "yyyyMMdd"
+$nombreArchivo = "backup_$(Split-Path $directoriOrigen -Leaf)_$fechaActual.zip"
+$rutaCompleta = Join-Path $directoriDesti $nombreArchivo
+
+if (Test-Path $rutaCompleta) {
+    Write-Host "Error: Ya existe un archivo de copia de seguridad con el nombre '$nombreArchivo'."
+    exit 2
+}
+
+# Crear archivo de copia de seguridad empaquetando y comprimiendo el contenido
+try {
+    Compress-Archive -Path $directoriOrigen -DestinationPath $rutaCompleta -Force
+    Write-Host "Copia de seguridad completada. Archivo guardado en: $rutaCompleta"
+} catch {
+    Write-Host "Error al realizar la copia de seguridad: $_"
+}

@@ -1,0 +1,30 @@
+param (
+    [string]$rutaCSV = "ruta\al\archivo.csv"
+)
+
+# Verificar si el archivo CSV existe
+if (Test-Path $rutaCSV -PathType Leaf) {
+    # Leer el contenido del archivo CSV
+    $contenidoCSV = Get-Content $rutaCSV
+
+    foreach ($linea in $contenidoCSV) {
+        # Dividir la línea en partes usando la coma como delimitador
+        $partes = $linea -split ','
+
+        # Obtener los valores individuales
+        $nomUsuari = $partes[0].Trim()
+        $unitatOrganitzativa = $partes[1].Trim()
+        $email = $partes[2].Trim()
+
+        # Mostrar por pantalla la información
+        $mensaje = "Usuari $nomUsuari que pertany a la UO $unitatOrganitzativa i correu electrònic $email"
+        Write-Host $mensaje
+
+        # Escribir en el archivo usuaris.txt
+        $mensaje | Out-File -Append -FilePath "usuaris.txt"
+    }
+
+    Write-Host "Procesamiento completado. Resultados almacenados en usuaris.txt."
+} else {
+    Write-Host "Error: El archivo $rutaCSV no existe."
+}

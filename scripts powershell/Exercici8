@@ -1,0 +1,13 @@
+# Obtener la lista de directorios en C:\Users
+$directorios = Get-ChildItem -Path C:\Users -Directory
+
+# Recorrer cada directorio y calcular la ocupación de disco
+foreach ($directorio in $directorios) {
+    $ocupacion = Get-ChildItem -Path $directorio.FullName -Recurse | Measure-Object -Property Length -Sum
+    $tamanoEnBytes = $ocupacion.Sum
+    $tamanoEnMegabytes = $tamanoEnBytes / 1MB
+
+    Write-Host "Directorio: $($directorio.FullName)"
+    Write-Host "Ocupación de disco: $($tamanoEnMegabytes) MB"
+    Write-Host "---------------------------"
+}
