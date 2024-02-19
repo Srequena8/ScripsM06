@@ -1,0 +1,32 @@
+# Función que saluda al usuario
+function Saludar {
+    param (
+        [string]$nombre
+    )
+
+    Write-Host "¡Hola, $nombre! Bienvenido al script de funciones."
+}
+
+# Función que suma dos números
+function Sumar {
+    param (
+        [int]$num1,
+        [int]$num2
+    )
+
+    $resultado = $num1 + $num2
+    return $resultado
+}
+
+# Función principal que llama a las funciones anteriores
+function EjecutarScript {
+    # Llamada a la función Saludar
+    Saludar -nombre "Usuario"
+
+    # Llamada a la función Sumar
+    $resultadoSuma = Sumar -num1 5 -num2 10
+    Write-Host "El resultado de la suma es: $resultadoSuma"
+}
+
+# Llamada a la función principal
+EjecutarScript

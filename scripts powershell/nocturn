@@ -1,0 +1,16 @@
+# Rutas de origen y destino (ajusta las rutas según tu configuración)
+$directoriOrigen = "C:\Users\Saul\Desktop\Carpeta_a_copiar"
+$directoriDesti = "C:\Users\Saul\Desktop\Carpeta_donde_se_copiara"
+
+# Ruta completa del script Exercici11.ps1
+$exercici11Path = "C:\Users\Saul\Desktop\scripts\Exercici11.ps1"
+
+# Verifica si el script Exercici11.2.ps1 existe antes de intentar ejecutarlo
+if (Test-Path -Path $exercici11Path -PathType Leaf) {
+    # Llama al script Exercici11.2.ps1 pasando las rutas como argumentos
+    Write-Host "Ejecutando Exercici11.2.ps1"
+    . $exercici11Path -directoriOrigen $directoriOrigen -directoriDesti $directoriDesti
+    Write-Host "El script Exercici11.2.ps1 ha sido ejecutado correctamente."
+} else {
+    Write-Host "Error: No se encuentra el script Exercici11.2.ps1 en la ruta especificada."
+}
