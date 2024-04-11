@@ -1,0 +1,39 @@
+param (
+    [string]$OUPath
+)
+
+# Verificar si se proporcionó la ruta de la OU como parámetro
+if (-not $OUPath) {
+    Write-Host "Por favor, proporciona la ruta de la Unidad Organizativa como parámetro." -ForegroundColor Yellow
+    exit
+}
+
+# Definir los atributos que se exportarán al CSV
+$header = "Nombre","Apellido","Nombre Completo","Nombre de Usuario","Correo electrónico","Descripción","Oficina","Grupo Principal"
+
+# Crear una lista para almacenar los datos de los usuarios
+$usersData = @()
+
+# Obtener todos los usuarios dentro de la OU especificada
+$users = Get-ADUser -Filter * -SearchBase $OUPath -Properties *
+
+# Recorrer los usuarios y recopilar la información
+foreach ($user in $users) {
+    $userData = [PSCustomObject]@{
+        "Nombre" = $user.GivenName
+        "Apellido" = $user.Surname
+        "Nombre Completo" = $user.Name
+        "Nombre de Usuario" = $user.SamAccountName
+        "Correo electrónico" = $user.EmailAddress
+        "Descripción" = $user.Description
+        "Oficina" = $user.Office
+        "Grupo Principal" = ($user.MemberOf | Get-ADGroup | Where-Object { $_.GroupCategory -eq 'Security' } | Select-Object -ExpandProperty Name) -join ","
+    }
+    $usersData += $userData
+}
+
+# Exportar los datos al archivo CSV
+$csvPath = "Usuarios_$((Get-Date).ToString('yyyyMMdd_HHmmss')).csv"
+$usersData | Export-Csv -Path $csvPath -NoTypeInformation -Delimiter ";" -Force
+
+Write-Host "Archivo CSV generado exitosamente: $csvPath" -ForegroundColor Green

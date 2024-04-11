@@ -1,0 +1,19 @@
+# Ruta del archivo CSV
+$csvPath = "C:\Users\Administrador\Documents\GruposSaul.csv"
+
+# Leer el archivo CSV
+$groupData = Import-Csv -Path $csvPath
+
+# Recorrer los datos del archivo CSV y crear grupos
+foreach ($group in $groupData) {
+    $groupName = $group.Nombre
+    $groupDescription = $group.Descripcion
+    $groupPath = "OU=Grupos,DC=SRM,DC=itb,DC=cat"
+
+    # Crear el grupo
+    try {
+        New-ADGroup -Name $groupName -Path $groupPath -GroupCategory Security -GroupScope Global -Description $groupDescription -ErrorAction Stop
+        Write-Host "Grupo '$groupName' creado con éxito."
+    } catch {
+        Write-Host "Error al crear el grupo '$groupName': $_" -ForegroundColor Red
+    }

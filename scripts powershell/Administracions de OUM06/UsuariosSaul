@@ -1,0 +1,40 @@
+# Ruta del archivo CSV
+$csvPath = "C:\Users\Administrador\Documents\UsuariosSaul.csv"
+
+# Leer el archivo CSV
+$userData = Import-Csv -Path $csvPath
+
+# Recorrer los datos del archivo CSV y crear usuarios
+foreach ($user in $userData) {
+    $firstName = $user.FirstName
+    $lastName = $user.LastName
+    $displayName = $user.DisplayName
+    $office = $user.Office
+    $email = $user.Email
+    $groups = $user.Groups -split ','  # Si los grupos están separados por comas en el CSV
+
+    # Crear el nombre de usuario combinando nombre y apellido
+    $userName = $firstName + $lastName
+
+    # Contraseña temporal (cambia esto por la contraseña deseada)
+    $password = "p@ssw0rd"
+
+    # Ajustar la ruta según tu estructura de Active Directory
+    $userPath = "OU=Usuarios,DC=dominio,DC=com"
+
+    # Ajustar la ruta del perfil si es necesario
+    $profilePath = "\\servidor\perfiles\$userName"
+
+    # Crear el usuario
+    try {
+        New-ADUser -Name $displayName -GivenName $firstName -Surname $lastName `
+            -SamAccountName $userName -UserPrincipalName "$userName@dominio.com" `
+            -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) `
+            -Path $userPath -ProfilePath $profilePath -Office $office -EmailAddress $email `
+            -Enabled $true -ChangePasswordAtLogon $false -PassThru | 
+            Add-ADGroupMember -Members $groups -ErrorAction Stop
+        Write-Host "Usuario '$displayName' creado con éxito y añadido a los grupos: $($groups -join ', ')."
+    } catch {
+        Write-Host "Error al crear el usuario '$displayName': $_" -ForegroundColor Red
+    }
+}

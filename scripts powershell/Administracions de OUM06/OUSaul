@@ -1,0 +1,17 @@
+# Ruta del fitxer CSV
+$csvPath = "C:\Users\Administrador\Documents\OUSaul.csv"
+
+# Llegir el fitxer CSV
+$ouData = Import-Csv -Path $csvPath
+
+# Crear les Unitats Organitzatives
+foreach ($ou in $ouData) {
+    $ouName = $ou.Nombre
+    $ouDescription = $ou.Descripcion
+    $ouPath = "OU=$ouName,DC=SRM,DC=itb,DC=cat"  
+
+    # Crear l'OU
+    
+        New-ADOrganizationalUnit -Name $ouName -Path "OU=OrganizationalUnits,DC=domini,DC=com" -Description $ouDescription -ProtectedFromAccidentalDeletion $false -ErrorAction Stop
+        Write-Host "OU '$ouName' creada amb èxit."
+    }
